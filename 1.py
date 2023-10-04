@@ -2,20 +2,37 @@ from collections import defaultdict
 from datetime import datetime
 
 
-def birthday_callendar(data):
+def birthday_callendar(
+    data,
+):  # перевірки на: пусте імя, на довжину даних, на відповідність полів (name/birthday)
+    if not data:
+        print("There is no data for analize")
+        return
     grouped_days = defaultdict(list)
     today = datetime.today().date()
+
     for user in data:
+        if "name" not in user.keys() or "birthday" not in user.keys():
+            print("data must be containe by name and dates (datetime(YYYY, MM, DD))")
+            return
+        if len(user) != 2:
+            print("Incorect data type")
+            return
+
         name = user["name"]  # визначаєм імя
+        if not name:
+            print("All users must have name, or code atleast")
+            return
+
         birthday = user["birthday"].date()  # Конвертуємо до типу date*
         birthday_this_year = birthday.replace(
             year=today.year
         )  # змінюєм рік на поточний
+
         if birthday_this_year < today:
             birthday_this_year = birthday.replace(year=today.year + 1)  #
 
         delta_days = (birthday_this_year - today).days  # виводим різницю між днями
-
         if delta_days >= 7:
             continue
 
@@ -25,9 +42,10 @@ def birthday_callendar(data):
             "Saturday",
             "Sunday",
         ]
+
         if day in weekends:
-            day = "Monday"
-        grouped_days[day].append(user["name"])  # групуємо по дню і забиваєм іменами
+            day = "Monday"  # назначаємо на понеділок вітання по вихідним
+        grouped_days[day].append(name)  # групуємо по дню і забиваєм іменами
 
     for key, value in grouped_days.items():
         val = ", ".join(value)  # збираєм імена у формат
@@ -51,3 +69,8 @@ data = [
     birthday_callendar(data) # 
 ]
 """
+
+data = [
+    {"names": "Bill Gates", "birthday": datetime(1955, 10, 4)},
+]
+birthday_callendar(data)
