@@ -44,6 +44,14 @@ def show_phone(args, contacts):  # тре перевріка на "мало да
     return phone
 
 
+def get_all(contacts):
+    if contacts:
+        for name, contact in contacts.items():
+            print("Name: {} Phone number: {}".format(name, contact))
+    else:
+        print("Phone book is empty, you need more friend less code in your life")
+
+
 def main():
     contacts = {}
     print("Welcome to the assistant bot!")
@@ -62,12 +70,7 @@ def main():
         elif command == "phone":
             print(show_phone(args, contacts))
         elif command == "all":
-            if contacts:
-                print(contacts)
-            else:
-                print(
-                    "Phone book is empty, you need more friend less code in your life"
-                )
+            get_all(contacts)
         else:
             print("Invalid command.")
 
